@@ -11,7 +11,7 @@ output_file="${2:-$def_name}"
 # Get first few key frames
 echo "Getting key frames..."
 max_frames="${3:-50}"
-keyframes_time=$(ffprobe -hide_banner -loglevel warning -select_streams v -skip_frame nokey -show_frames -show_entries frame=pkt_dts_time "$1" | grep "pkt_dts_time=" | xargs shuf -n "$max_frames" -e | awk -F  "=" '{print $2}')
+keyframes_time=$(ffprobe -hide_banner -loglevel warning -select_streams v -skip_frame nokey -show_frames -show_entries frame=pkt_pts_time,pkt_dts_time "$1" | grep "pkt_dts_time=" | xargs shuf -n "$max_frames" -e | awk -F  "=" '{print $2}')
 
 # Save them as images, in a temporary directory
 tmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'watermark_remove')
